@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.enity;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int  id;
 
+    @Getter
     private String name;
 
     @ManyToMany
@@ -40,10 +42,6 @@ public class Role {
     public String toString() {
         return "Role_" +
                 "name='" + name + '\'';
-    }
-
-    public String getName() {
-        return "Role_"+name;
     }
 
     @Override

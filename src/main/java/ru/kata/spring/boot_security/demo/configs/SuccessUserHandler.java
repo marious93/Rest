@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import ru.kata.spring.boot_security.demo.enity.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,15 +26,11 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+        var roles1 = authentication.getAuthorities();
         String user = "USER";
         String admin = "ADMIN";
-        var email = authentication.getName();
-        System.out.println("name "+email);
-        for (String role : roles) {
-            System.out.println(role);
-        }
-        System.out.println(roles);
-        //UserDetails realUser= authencation.getPrincipal();
+        String name = authentication.getName();
+        //int id =
 
         if (roles.stream().anyMatch(s -> s.contains(admin))) {
             httpServletResponse.sendRedirect("/admin");
