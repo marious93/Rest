@@ -60,8 +60,6 @@ public class User implements UserDetails {
         this.roles.remove(role);
     }
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new HashSet<GrantedAuthority>();
