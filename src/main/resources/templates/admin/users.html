@@ -19,12 +19,17 @@
             <a th:href="@{/admin/{id}(id=${User.getId()})}" th:text="${User.getId()}">user</a>
         </td>
         <td th:text="${User.getUsername()}"></td>
-        <td th:text="${User.getRoles1()}"></td>
+        <td th:text="${User.getRolesToString()}"></td>
     </tr>
     </tbody>
 </table>
 <br/>
+
 <hr/>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+<br/>
 <a href="/new"> Create new user</a>
 </body>
 </html>
