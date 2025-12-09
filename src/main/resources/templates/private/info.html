@@ -8,5 +8,8 @@
 <div>Id: <a th:text="${user.getId()}"></a></div>
 <div>Name: <a th:text="${user.getUsername()}"></a></div>
 <div>Role: <a th:text="${user.getRoles1()}"></a></div>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>

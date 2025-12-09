@@ -6,28 +6,41 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.enity.User;
-import ru.kata.spring.boot_security.demo.service.DBService;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.CustomUserService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService userService;
+    private final CustomUserService userService;
 
-    public AdminController(UserService userService) {
+    public AdminController(CustomUserService userService) {
         this.userService = userService;
     }
 
+    @GetMapping("/new")
+    public String createUser(Model model) {
+        model.addAttribute("user", new User());
+        return "admin/create";
+    }
+
+    @PostMapping("/new")
+    public String createUser(@ModelAttribute("user") @Validated User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/create";
+        }
+        userService.saveUser(user);
+        return "redirect:/admin/users";
+    }
 
     @GetMapping("/{id}")
-    public String index(@PathVariable int id,Model model) {
+    public String showUser(@PathVariable int id,Model model) {
         model.addAttribute("user", userService.findUserById(id));
         return "admin/info";
     }
 
     @GetMapping("/users")
-    public String users(Model model) {
+    public String showUsersList(Model model) {
         model.addAttribute("users", userService.getUsersList());
         return "admin/users";
     }
@@ -39,7 +52,7 @@ public class AdminController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateUser1(@ModelAttribute("user")@Validated User user, BindingResult bindingResult,
+    public String updateUser(@ModelAttribute("user")@Validated User user, BindingResult bindingResult,
                               @PathVariable int id) {
         if (bindingResult.hasErrors()) {
             return "admin/edit";
@@ -50,7 +63,7 @@ public class AdminController {
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable int id) {
-        userService.deleteById(id);
+        userService.deleteUserById(id);
         return "redirect:/admin";
     }
 

@@ -6,22 +6,17 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.CustomUserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
-    private final UserService userService;
+    private final CustomUserServiceImpl userService;
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, CustomUserServiceImpl userService) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
     }
@@ -30,10 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/index","/new").permitAll()
-               // .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/", "/index", "/new").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("ADMIN","USER")
+                .antMatchers("/user/").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
@@ -43,29 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    // аутентификация inMemory
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.builder()
-//                        .username("u1")
-//                        .password(passwordEncoder().encode("1234"))
-//                        .roles("USER")
-//                        .build();
-//        UserDetails admin =
-//                User.builder()
-//                        .username("u2")
-//                        .password(passwordEncoder().encode("1234"))
-//                        .roles("ADMIN","USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user,admin);
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-      //  return new BCryptPasswordEncoder();
         return NoOpPasswordEncoder.getInstance();
     }
 

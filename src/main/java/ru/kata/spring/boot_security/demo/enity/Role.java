@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,7 +13,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int  id;
+    private int id;
 
     @Getter
     private String name;
@@ -51,5 +50,6 @@ public class Role {
     public int hashCode() {
         return Objects.hashCode(name);
     }
+
 
 }
