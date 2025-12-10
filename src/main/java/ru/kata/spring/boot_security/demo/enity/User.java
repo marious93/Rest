@@ -56,9 +56,6 @@ public class User implements UserDetails {
         this.roles.add(role);
     }
 
-    public void deleteRole(Role role) {
-        this.roles.remove(role);
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
