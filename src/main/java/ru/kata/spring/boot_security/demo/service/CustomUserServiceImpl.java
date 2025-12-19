@@ -5,14 +5,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.enity.Role;
 import ru.kata.spring.boot_security.demo.enity.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,10 +27,13 @@ public class CustomUserServiceImpl implements CustomUserService {
     private static final String ADMIN_ROLE = "ROLE_ADMIN";
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final RoleRepository roleRepository;
 
-    public CustomUserServiceImpl(UserRepository userRepository, RoleService roleService) {
+
+    public CustomUserServiceImpl(UserRepository userRepository, RoleService roleService, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -45,27 +53,38 @@ public class CustomUserServiceImpl implements CustomUserService {
     }
 
     @Override
-    public void saveUser(User user) {
-        Role role = roleService.findRoleByName(USER_ROLE);
-        if (role == null) {
-            roleService.saveRole(new Role(USER_ROLE));
-        }
-        user.addRole(role);
+    public void saveUser(User user, List<Integer> roleIds) {
+        Set<Role> roles = roleIds.stream()
+                .map(id -> roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role not found")))
+                .collect(Collectors.toSet());
+        user.setRoles(roles);
         userRepository.save(user);
     }
 
     @Override
-    public void updateUser(int id, User user) {
+    public void updateUser(int id, User user,List<Integer> roleIds) {
         User oldUser = userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User not found"));
         oldUser.setUsername(user.getUsername());
         oldUser.setPassword(user.getPassword());
+        oldUser.setLastName(user.getLastName());
+        oldUser.setFirstName(user.getFirstName());
+        oldUser.setAge(user.getAge());
+        Set<Role> roles = roleIds.stream()
+                .map(i -> roleRepository.findById(i).orElseThrow(() -> new EntityNotFoundException("Role not found")))
+                .collect(Collectors.toSet());
+        user.setRoles(roles);
         userRepository.save(oldUser);
     }
 
     @Override
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public int getUserIdByUsername(String username) {
+        return userRepository.getUserIdByUsername(username);
     }
 
 

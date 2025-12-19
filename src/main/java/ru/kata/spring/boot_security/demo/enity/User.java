@@ -25,7 +25,17 @@ public class User implements UserDetails {
     @NotNull(message = "Логин не может быть null")
     @NotEmpty(message = "Логин не может быть пустым")
     @Size(min = 2, max = 30, message = "Логин должен быть от 2 до 30 символов")
+    private String firstName;
+
+    @NotNull(message = "Логин не может быть null")
+    @NotEmpty(message = "Логин не может быть пустым")
+    @Size(min = 2, max = 30, message = "Логин должен быть от 2 до 30 символов")
+    private String lastName;
+
+    private int age;;
+
     private String username;
+
 
     @NotNull(message = "Пароль не может быть null")
     @NotEmpty(message = "Пароль не может быть пустым")
@@ -60,6 +70,11 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new HashSet<GrantedAuthority>();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
     }
 
     @Override

@@ -14,16 +14,15 @@ import static java.util.Arrays.stream;
 
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
-    private static final String USER = "ROLE_USER";
-    private static final String ADMIN = "ROLE_ADMIN";
-
+    private static final String USER = "USER";
+    private static final String ADMIN = "ADMIN";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
         if (roles.stream().anyMatch(s -> s.contains(ADMIN))) {
-            httpServletResponse.sendRedirect("/admin");
+            httpServletResponse.sendRedirect("/admin/users");
         } else if (roles.stream().anyMatch(s -> s.contains(USER))) {
             httpServletResponse.sendRedirect("/user");
         } else {
