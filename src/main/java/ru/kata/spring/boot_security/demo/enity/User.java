@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -32,7 +33,8 @@ public class User implements UserDetails {
     @Size(min = 2, max = 30, message = "Логин должен быть от 2 до 30 символов")
     private String lastName;
 
-    private int age;;
+    private int age;
+    ;
 
     private String username;
 
@@ -52,18 +54,7 @@ public class User implements UserDetails {
     }
 
     public String getRolesToString() {
-        String result = "";
-        for (Role role : roles) {
-            result = result + role.getName() + ",";
-        }
-        return result;
-    }
-
-    public void addRole(Role role) {
-        if (this.roles == null) {
-            this.roles = new HashSet<>();
-        }
-        this.roles.add(role);
+        return roles.stream().map(Role::getName).collect(Collectors.joining(" "));
     }
 
 
@@ -72,10 +63,6 @@ public class User implements UserDetails {
         return new HashSet<GrantedAuthority>();
     }
 
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.enity.Role;
@@ -15,7 +14,6 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,8 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class CustomUserServiceImpl implements CustomUserService {
-    private static final String USER_ROLE = "ROLE_USER";
-    private static final String ADMIN_ROLE = "ROLE_ADMIN";
+
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final RoleRepository roleRepository;
@@ -62,7 +59,7 @@ public class CustomUserServiceImpl implements CustomUserService {
     }
 
     @Override
-    public void updateUser(int id, User user,List<Integer> roleIds) {
+    public void updateUser(int id, User user, List<Integer> roleIds) {
         User oldUser = userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User not found"));
         oldUser.setUsername(user.getUsername());
@@ -73,7 +70,7 @@ public class CustomUserServiceImpl implements CustomUserService {
         Set<Role> roles = roleIds.stream()
                 .map(i -> roleRepository.findById(i).orElseThrow(() -> new EntityNotFoundException("Role not found")))
                 .collect(Collectors.toSet());
-        user.setRoles(roles);
+        oldUser.setRoles(roles);
         userRepository.save(oldUser);
     }
 

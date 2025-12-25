@@ -5,33 +5,38 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/register" method="post">
-    <label>First name</label>
-    <input type="text" name="firstName" placeholder="Имя пользователя">
-    <br>
-    <label>Last Name</label>
-    <input type="text" name="lastName" placeholder="Имя пользователя">
-    <br>
-    <label>Password</label>
-    <input type="password" name="password" placeholder="Пароль">
-    <br>
-    <label>Age</label>
-    <input type="text" name="Age" placeholder="Имя пользователя">
-    <br>
-    <label>Username</label>
-    <input type="text" name="username" placeholder="Имя пользователя">
-    <br>
-    <select id="roles" name="roles" multiple>
-        <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getName()}"></option>
-    </select>
-    <button type="submit" class="btn btn-outline-success">Зарегистрироваться</button>
-</form>
+        <form th:method="POST" th:action="@{/new}" th:object="${user}">
+            <label>First name</label>
+            <input type="text" placeholder="firstName" th:field="*{firstName}"/>
+            <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="firstName"></div>
+            <br/>
 
+            <label>Last name</label>
+            <input type="text" placeholder="lastName" th:field="*{lastName}"/>
+            <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="lastName"></div>
+            <br/>
 
-</form>
-<br/>
-<!--<form th:action="@{/logout}" method="post">-->
-<!--    <button type="submit">Logout</button>-->
-<!--</form>-->
+            <label>Age</label>
+            <input type="text" placeholder="age" th:field="*{age}"/>
+            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="age"></div>
+            <br/>
+
+            <label>Username</label>
+            <input type="text" placeholder="username" th:field="*{username}"/>
+            <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="username"></div>
+            <br/>
+            <label>Password</label>
+            <input type="text" placeholder="password" th:field="*{password}"/>
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="password"></div>
+            <br/>
+            <label for="roles">Role</label>
+            <select id="roles" name="roles" multiple>
+                <option th:each="role : ${roles}" th:value="${role.getId()}"
+                        th:text="${role.getName()}"></option>
+            </select>
+            <input type="submit" value="Create!"/>
+
+        </form>
+
 </body>
 </html>
