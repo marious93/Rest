@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/index", "/new").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/user/**").hasAnyAuthority("ADMIN", "USER")
-            //    .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().usernameParameter("username").passwordParameter("password")
                 .loginPage("/login").loginProcessingUrl("/login").successHandler(successUserHandler)
@@ -46,11 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout(logout -> logout
                         .logoutUrl("/logout") // URL для выхода
                         .logoutSuccessUrl("/login?logout") // Куда перенаправить после выхода
-                        .permitAll()
-
-                .permitAll());
+                        .permitAll());
     }
-
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

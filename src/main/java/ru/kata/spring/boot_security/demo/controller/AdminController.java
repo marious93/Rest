@@ -37,7 +37,7 @@ public class AdminController {
             return "admin/create";
         }
         userService.saveUser(user, roles);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
     @GetMapping("/{id}")
@@ -46,7 +46,7 @@ public class AdminController {
         return "admin/info";
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public String showUsersList(Model model) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("user", userService.findUserByUsername(userName));
@@ -65,19 +65,18 @@ public class AdminController {
     @PostMapping("/edit/{id}")
     public String updateUser(@ModelAttribute("user") @Validated User user, BindingResult bindingResult,
                              @PathVariable int id,
-                             @RequestParam("roles") List<Integer> roleIds) {
+                             @RequestParam("roles1") List<Integer> roleIds) {
         if (bindingResult.hasErrors()) {
             return "admin/edit";
         }
         userService.updateUser(id, user, roleIds);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable int id) {
         userService.deleteUserById(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
-
 
 }

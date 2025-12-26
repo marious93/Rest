@@ -7,28 +7,79 @@
     <title>User page</title>
 </head>
 <body>
+<div class="container-fluid">
 
-<div class="row bg-dark text-white">
-    <div class="col-2" align="center">
-        <div style="color: white">Name: <a th:text="${user.getUsername()}"></a></div>
+    <div class="row bg-dark bg-opacity-80 text-white">
+        <div class="col-2" align="center">
+
+            <div class="col" style="color: white">
+                <div class="mx-auto p-2 " align="left">
+                    <a th:text="${user.username} + ' with roles: ' + ${user.rolesToString}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8" align="center">
+        </div>
+        <div class="col" align="right">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn bg-dark text-white-50" style>Logout</button>
+            </form>
+        </div>
     </div>
 
-    <div class="col-8" align="center">
-    </div>
+    <div>
+        <div class="row ">
+            <div class="col-2 g-0 gy-2">
+                <ol class="list-group d-flex flex-column min-vh-100 ">
+                    <li class="list-group-item active" aria-current="true">
+                        <div style="margin-left: 10px; "> User</div>
+                    </li>
+                </ol>
+            </div>
 
-    <div class="col" align="right">
-        <form th:action="@{/logout}" method="post">
-            <button style="color: darkgray" type="submit">Logout</button>
-        </form>
+            <div class="col-10 bg-body-secondary bg-opacity-50 flex-grow-1 px-4" align="left">
+                <div class="p-1 my-1"><h1>User information-page</h1></div>
+                <div class="container bg-white border border-2 rounded-top-1 rounded-bottom-1 ">
+                    <div class="row bg-secondary bg-opacity-10 rounded-top-1 border-bottom ">
+                        <div class="col-sm align-self-start p-2 my-1" style="width: 50%; margin-left: 10px;">
+                            <h5>About user</h5>
+                        </div>
+                    </div>
+                    <div class="container ">
+                        <div class="tab-content " id="myTabContent">
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel"
+                                 aria-labelledby="tab1-tab">
+
+                                <table class="table table-striped mt-3 table-borderless">
+                                    <thead>
+                                    <tr class="border border-top border-end-0 border-start-0 border-bottom-0">
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="border border-top border-end-0 border-start-0 border-bottom-0">
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.firstName}"></td>
+                                    <td th:text="${user.lastName}"></td>
+                                    <td th:text="${user.age}"></td>
+                                    <td th:text="${user.username}"></td>
+                                    <td th:text="${user.rolesToString}"></td>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
     </div>
 </div>
-
-
-<div>
-    <div>Id: <a th:text="${user.getId()}"></a></div>
-    <div>Name: <a th:text="${user.getUsername()}"></a></div>
-    <div>Role: <a th:text="${user.getRolesToString()}"></a></div>
-</div>
-
 </body>
 </html>

@@ -1,331 +1,371 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <title>Users</title>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    <title>Модальное окно с фразой</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
+    <!--    <link rel="stylesheet" href="style.css">-->
 </head>
 <body>
-<div class="row bg-dark text-white">
-    <div class="col-3" align="center">
-        <div style="color: white"><a
-                th:text="${user.username} + ' with roles: ' + ${user.rolesToString}">
-        </a></div>
-    </div>
-
-    <div class="col-8" align="center">
-    </div>
-    <div class="col" align="right">
-        <form th:action="@{/logout}" method="post">
-            <button type="submit" class="btn bg-dark text-white-50" style>Logout</button>
-        </form>
-    </div>
-</div>
-
-<div>
-    <div class="row">
-        <div class="col-2 " align="center" style>
-            <div>Admin</div>
-            <div>User</div>
+<div class="container-fluid">
+    <div class="row bg-dark text-white">
+        <div class="col-3" align="center">
+            <div style="color: white">
+                <div class="mx-auto p-2 " align="left"><a
+                    th:text="${user.username} + ' with roles: ' + ${user.rolesToString}">
+            </a></div>
         </div>
+        </div>
+        <div class="col-8" align="center">
+        </div>
+        <div class="col" align="right">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn bg-dark text-white-50" style>Logout</button>
+            </form>
+        </div>
+    </div>
 
-        <div class="col-9" align="left">
-            <div><h1> Admin panel</h1></div>
+    <!--    123-->
+    <div class="container-fluid">
 
-            <div class="container mt-4 justify-content-start ">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active text-start" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
-                                type="button"
-                                role="tab" aria-controls="tab1" aria-selected="true">Users table
-                        </button>
+        <div class="row ">
+            <div class="col-2 g-0 gy-2">
+                <ol class="list-group d-flex flex-column min-vh-100 ">
+                    <li class="container-fluid">
+                        <a href="https://localhost:8080/admin" class="list-group-item active" style="margin-left: 10px; " aria-current="true">Admin</a>
+                        <a href="https://localhost:8080/user" class="list-group-item" style="margin-left: 10px; "> User</a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
-                                type="button" role="tab"
-                                aria-controls="tab2" aria-selected="false">New User
-                        </button>
-                    </li>
-                </ul>
+                </ol>
             </div>
 
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                    <h2>All users</h2>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="User : ${users}">
-                            <td th:text="${User.id}"></td>
-                            <td th:text="${User.firstName}"></td>
-                            <td th:text="${User.lastName}"></td>
-                            <td th:text="${User.age}"></td>
-                            <td th:text="${User.username}"></td>
-                            <td th:text="${User.rolesToString}"></td>
-                            <td>
-                                <button id="editButton" type="button" class="btn btn-primary btn-success"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        th:data-id="${User.id}"> Edit </button>
-                            </td>
-                            <td>
-                                <button id="deleteButton" type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        th:data-id="${User.id}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!--                Создание пользователя-->
-                <div class="tab-pane fade centered-block"  id="tab2"
-                     role="tabpanel"
-                     aria-labelledby="tab2-tab">
-                    <h2> Create user</h2>
-                    <div class="col-13" style="text-align: center;">
-                        <form th:method="POST" th:action="@{/admin/new}" th:object="${newUser}">
+            <div class="col-10 bg-body-secondary bg-opacity-50 flex-grow-1 px-4" align="left">
+                <div class="p-1 my-1"><h1>Admin page</h1></div>
+                <div class="container mt-4 justify-content-start ">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active text-start" id="tab1-tab" data-bs-toggle="tab"
+                                    data-bs-target="#tab1"
+                                    type="button"
+                                    role="tab" aria-controls="tab1" aria-selected="true">Users table
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                                    type="button" role="tab"
+                                    aria-controls="tab2" aria-selected="false">New User
+                            </button>
+                        </li>
+                    </ul>
 
-                            <label><b>First name</b></label>
-                            <br/>
-                            <input type="text" placeholder="firstName" th:field="*{firstName}"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="firstName"></div>
-                            <br/>
+                    <div class="container bg-white border border-2 rounded-top-1 rounded-bottom-1 ">
 
-                            <label><b>Last name</b></label>
-                            <br/>
-                            <input type="text" placeholder="lastName" th:field="*{lastName}"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="lastName"></div>
-                            <br/>
-
-                            <label><b>Age</b></label>
-                            <br/>
-                            <input type="number" placeholder="age" th:field="*{age}"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="age"></div>
-                            <br/>
-
-                            <label><b>Email</b></label>
-                            <br/>
-                            <input type="email" placeholder="username" th:field="*{username}"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="username"></div>
-                            <br/>
-                            <label><b>Password</b></label>
-                            <br/>
-
-                            <input type="text" placeholder="password" th:field="*{password}"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="password"></div>
-                            <br/>
-                            <div>
-                                <label for="roles">Role</label>
-                                <br/>
-                                <select id="roles" name="roles" size="2" multiple>
-                                    <option th:each="role : ${roles}" th:value="${role.id}"
-                                            th:text="${role.name}"></option>
-                                </select>
+                        <div class="row bg-secondary bg-opacity-10 rounded-top-1 border-bottom ">
+                            <div class="col-sm align-self-start p-2 my-1" style="width: 50%; margin-left: 10px;">
+                                <h5 id="h">All users</h5>
                             </div>
-                            <input type="submit"  class="btn btn-primary btn-success"  value="Add new user"/>
+                        </div>
+                        <div class="container ">
+                            <div class="tab-content " id="myTabContent">
+                                <div class="tab-pane fade show active" id="tab1" role="tabpanel"
+                                     aria-labelledby="tab1-tab">
 
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--            EditUser-->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div align="center">
-                        <div class="col-6 modal-body" align="center">
-                            <form th:method="POST" th:object="${user}" id="myForm1">
-                                <label for="Id1"><b>Id</b></label>
-                                <br>
-                                <input type="text" placeholder="id" th:field="*{id}" id="Id1" disabled/>
-                                <div style="color:red" th:if="${#fields.hasErrors('id')}"
-                                     th:errors="userid" disabled="true"></div>
-                                <br/>
-                                <label for="firstName1"><b>First name</b></label>
-                                <input type="text" placeholder="firstName" th:field="*{firstName}"
-                                       id="firstName1"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
-                                     th:errors="firstName"></div>
-                                <br/>
-
-                                <label for="lastName1"><b>Last name</b></label>
-                                <input type="text" placeholder="lastName" th:field="*{lastName}"
-                                       id="lastName1"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
-                                     th:errors="lastName"></div>
-                                <br/>
-
-                                <label for="age1"><b>Age</b></label>
-                                <input type="number" placeholder="age" id="age1"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('age')}"
-                                     th:errors="age"></div>
-
-                                <br/>
-                                <label for="username1"><b>Email</b></label>
-                                <input type="email" placeholder="username" th:field="*{username}"
-                                       id="username1"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('username')}"
-                                     th:errors="username"></div>
-
-                                <br/>
-                                <label for="password1"><b>Password</b></label>
-                                <br/>
-                                <input type="password" placeholder="password" th:field="*{password}"
-                                       id="password1"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('password')}"
-                                     th:errors="password"></div>
-                                <br/>
-                                <div>
-                                    <label for="roles"><b>Role</b></label>
-                                    <br/>
-                                    <select id="roles1" multiple size="2">
-                                        <option th:each="role : ${roles}" th:value="${role.id}"
-                                                th:text="${role.name}"></option>
-                                    </select>
+                                    <table class="table table-striped mt-3 table-borderless">
+                                        <thead>
+                                        <tr class="border border-top border-end-0 border-start-0 border-bottom-0">
+                                            <th scope="col">ID</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Age</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="border border-top border-end-0 border-start-0 border-bottom-0">
+                                        <tr th:each="User : ${users}">
+                                            <td th:text="${User.id}"></td>
+                                            <td th:text="${User.firstName}"></td>
+                                            <td th:text="${User.lastName}"></td>
+                                            <td th:text="${User.age}"></td>
+                                            <td th:text="${User.username}"></td>
+                                            <td th:text="${User.rolesToString}"></td>
+                                            <td>
+                                                <button id="editButton" type="button" class="btn btn-info text-white"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal"
+                                                        th:data-id="${User.id}"> Edit
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button id="deleteButton" type="button"
+                                                        class="btn btn-danger text-white" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal"
+                                                        th:data-id="${User.id}">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="modal-footer"  >
-                                    <!--                                    Выревнивание по правому краю-->
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                        Close
-                                    </button>
-                                    <button type="submit" id="action" class="btn btn-primary">Click me</button>
+                                <div class="tab-pane fade centered-block" id="tab2"
+                                     role="tabpanel"
+                                     aria-labelledby="tab2-tab">
+                                    <div class="col-13" style="text-align: center;">
+                                        <form th:method="POST" th:action="@{/admin/new}" th:object="${newUser}">
+
+                                            <label><b>First name</b></label>
+                                            <br/>
+                                            <input type="text" placeholder="firstName" th:field="*{firstName}"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
+                                                 th:errors="firstName"></div>
+                                            <br/>
+
+                                            <label><b>Last name</b></label>
+                                            <br/>
+                                            <input type="text" placeholder="lastName" th:field="*{lastName}"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
+                                                 th:errors="lastName"></div>
+                                            <br/>
+
+                                            <label><b>Age</b></label>
+                                            <br/>
+                                            <input type="number" placeholder="age" th:field="*{age}"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('age')}"
+                                                 th:errors="age"></div>
+                                            <br/>
+
+                                            <label><b>Email</b></label>
+                                            <br/>
+                                            <input type="email" placeholder="username" th:field="*{username}"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('username')}"
+                                                 th:errors="username"></div>
+                                            <br/>
+                                            <label><b>Password</b></label>
+                                            <br/>
+
+                                            <input type="text" placeholder="password" th:field="*{password}"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('password')}"
+                                                 th:errors="password"></div>
+                                            <br/>
+                                            <div>
+                                                <label for="roles">Role</label>
+                                                <br/>
+                                                <select id="roles" name="roles" size="2" multiple>
+                                                    <option th:each="role : ${roles}" th:value="${role.id}"
+                                                            th:text="${role.name}"></option>
+                                                </select>
+                                            </div>
+                                            <input type="submit" class="btn btn-primary btn-success"
+                                                   value="Add new user"/>
+                                        </form>
+                                    </div>
                                 </div>
-                            </form>
+
+                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                                                <button type="button" class="close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div align="center">
+                                                <div class="col-6 modal-body" align="center">
+                                                    <form th:method="POST" th:object="${user}" id="myForm1">
+                                                        <label for="Id1"><b>Id</b></label>
+                                                        <br>
+                                                        <input type="text" placeholder="id" th:field="*{id}" id="Id1"
+                                                               disabled/>
+                                                        <div style="color:red" th:if="${#fields.hasErrors('id')}"
+                                                             th:errors="userid" disabled="true"></div>
+                                                        <br/>
+                                                        <label for="firstName1"><b>First name</b></label>
+                                                        <input type="text" placeholder="firstName"
+                                                               th:field="*{firstName}"
+                                                               id="firstName1"/>
+                                                        <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
+                                                             th:errors="firstName"></div>
+                                                        <br/>
+
+                                                        <label for="lastName1"><b>Last name</b></label>
+                                                        <input type="text" placeholder="lastName" th:field="*{lastName}"
+                                                               id="lastName1"/>
+                                                        <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
+                                                             th:errors="lastName"></div>
+                                                        <br/>
+
+                                                        <label for="age1"><b>Age</b></label>
+                                                        <input type="number" placeholder="age" id="age1"/>
+                                                        <div style="color:red" th:if="${#fields.hasErrors('age')}"
+                                                             th:errors="age"></div>
+
+                                                        <br/>
+                                                        <label for="username1"><b>Email</b></label>
+                                                        <input type="email" placeholder="username"
+                                                               th:field="*{username}"
+                                                               id="username1"/>
+                                                        <div style="color:red" th:if="${#fields.hasErrors('username')}"
+                                                             th:errors="username"></div>
+
+                                                        <br/>
+                                                        <label for="password1"><b>Password</b></label>
+                                                        <br/>
+                                                        <input type="password" placeholder="password"
+                                                               th:field="*{password}"
+                                                               id="password1"/>
+                                                        <div style="color:red" th:if="${#fields.hasErrors('password')}"
+                                                             th:errors="password"></div>
+                                                        <br/>
+                                                        <div>
+                                                            <label for="roles"><b>Role</b></label>
+                                                            <br/>
+                                                            <select id="roles1" multiple size="2">
+                                                                <option th:each="role : ${roles}" th:value="${role.id}"
+                                                                        th:text="${role.name}"></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <!--                                    Выревнивание по правому краю-->
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="submit" id="action" class="btn btn-primary">
+                                                                Click me
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col"></div>
         </div>
     </div>
-
-
-    <script th:inline="javascript">
-        const exampleModal = document.getElementById('exampleModal');
-        const btn = document.getElementById('myForm1');
-        let getURL = undefined
-        let postURL = undefined
-        let id = null;
-        if (exampleModal) {
-            exampleModal.addEventListener('show.bs.modal', event => {
-                const button = event.relatedTarget
-                id = button.getAttribute('data-id')
-                document.getElementById('Id1').value = id;
-                getURL = 'http://localhost:8080/admin/edit/' + id;
-
-                if (button === document.getElementById('editButton')) {
-                    document.getElementById('action').innerText = "Edit";
-                    postURL = getURL;
-                    document.getElementById('exampleModalLabel').innerText = "Edit user"
-                } else if (button === document.getElementById('deleteButton')) {
-                    document.getElementById('firstName1').disabled = true;
-                    document.getElementById('lastName1').disabled = true;
-                    document.getElementById('age1').disabled = true;
-                    document.getElementById('username1').disabled = true;
-                    document.getElementById('password1').disabled = true;
-                    document.getElementById('action').innerText = "Delete";
-                    document.getElementById('exampleModalLabel').innerText = "Delete user"
-                    postURL = 'http://localhost:8080/admin/delete/' + id;
-                }
-
-                fetch(getURL) // URL для запроса
-                    .then(response => {
-                        if (!response.ok) { // Проверка на успешный статус (200-299)
-                            throw new Error('Сетевая ошибка: ' + response.status);
-                        }
-                        return response.text(); // Преобразуем ответ в JSON, можно использовать .text()
-                    })
-                    .then(data => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(data, 'text/html');
-                        const inputElement2 = doc.getElementById('firstName');
-                        const inputElement3 = doc.getElementById('lastName')
-                        const inputElement4 = doc.getElementById('age');
-                        const inputElement5 = doc.getElementById('username')
-                        const inputElement6 = doc.getElementById('password');
-                        // const inputElement3 = doc.getElementById('lastName')
-
-                        document.getElementById('firstName1').value = inputElement2.value;
-                        document.getElementById('lastName1').value = inputElement3.value;
-                        document.getElementById('age1').value = inputElement4.value;
-                        document.getElementById('username1').value = inputElement5.value;
-                        document.getElementById('password1').value = inputElement6.value;
-
-
-                    })
-                    .catch(error => {
-                        console.error('Ошибка при запросе:', error); // Обработка ошибок
-                    });
-            })
-
-            // Добавляем обработчик
-            btn.addEventListener('submit', function () {
-                event.preventDefault();
-                if (id && postURL) {
-                    const formData = new FormData();
-                    formData.append('id', id);
-                    formData.append('username', document.getElementById('username1').value);
-                    formData.append('firstName', document.getElementById('firstName1').value);
-                    formData.append('lastName', document.getElementById('lastName1').value);
-                    formData.append('password', document.getElementById('password1').value);
-                    formData.append('age', document.getElementById('age1').value);
-                    const colorSelect = document.getElementById('roles1');
-
-                    const selectedOptions = [];
-                    // Перебираем все опции
-                    for (let i = 0; i < colorSelect.options.length; i++) {
-                        // Если опция выбрана, добавляем её value в массив
-                        if (colorSelect.options[i].selected) {
-                            selectedOptions.push(colorSelect.options[i].value);
-                        }
-                    }
-                    formData.append('roles', selectedOptions);
-                    fetch(postURL, {
-                        method: 'POST',
-                        body: formData, // Отправляем данные в формате FormData
-                    })
-                        .then(response => {
-                            if (response.ok) { // Проверяем, что ответ успешный (статус 200-299)
-                                // Редирект на страницу успеха
-                                window.location.href = '/admin/users';
-                                // или window.location.replace('/success-page');
-                            }
-                        }) // Парсим ответ как JSON
-
-                        .catch((error) => {
-                            console.error('Ошибка:', error);
-                            document.getElementById('response').textContent = 'Произошла ошибка при отправке.';
-                        });
-                }
-            });
-        }
-    </script>
-
 </div>
+<script th:inline="javascript">
+    const exampleModal = document.getElementById('exampleModal');
+    const btn = document.getElementById('myForm1');
+    let getURL = undefined
+    let postURL = undefined
+    let id = null;
+    if (exampleModal) {
+        exampleModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget
+            id = button.getAttribute('data-id')
+            document.getElementById('Id1').value = id;
+            getURL = 'http://localhost:8080/admin/edit/' + id;
 
+            if (button === document.getElementById('editButton')) {
+                document.getElementById('action').innerText = "Edit";
+                postURL = getURL;
+                document.getElementById('exampleModalLabel').innerText = "Edit user"
+            } else if (button === document.getElementById('deleteButton')) {
+                document.getElementById('firstName1').disabled = true;
+                document.getElementById('lastName1').disabled = true;
+                document.getElementById('age1').disabled = true;
+                document.getElementById('username1').disabled = true;
+                document.getElementById('password1').disabled = true;
+                document.getElementById('action').innerText = "Delete";
+                document.getElementById('exampleModalLabel').innerText = "Delete user"
+                postURL = 'http://localhost:8080/admin/delete/' + id;
+            }
+
+            fetch(getURL) // URL для запроса
+                .then(response => {
+                    if (!response.ok) { // Проверка на успешный статус (200-299)
+                        throw new Error('Сетевая ошибка: ' + response.status);
+                    }
+                    return response.text(); // Преобразуем ответ в JSON, можно использовать .text()
+                })
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const inputElement2 = doc.getElementById('firstName');
+                    const inputElement3 = doc.getElementById('lastName')
+                    const inputElement4 = doc.getElementById('age');
+                    const inputElement5 = doc.getElementById('username')
+                    const inputElement6 = doc.getElementById('password');
+                    // const inputElement3 = doc.getElementById('lastName')
+
+                    document.getElementById('firstName1').value = inputElement2.value;
+                    document.getElementById('lastName1').value = inputElement3.value;
+                    document.getElementById('age1').value = inputElement4.value;
+                    document.getElementById('username1').value = inputElement5.value;
+                    document.getElementById('password1').value = inputElement6.value;
+
+
+                })
+                .catch(error => {
+                    console.error('Ошибка при запросе:', error); // Обработка ошибок
+                });
+        })
+
+        // Добавляем обработчик
+        btn.addEventListener('submit', function () {
+            // event.preventDefault();
+            if (id && postURL) {
+                const formData = new FormData();
+                formData.append('id', id);
+                formData.append('username', document.getElementById('username1').value);
+                formData.append('firstName', document.getElementById('firstName1').value);
+                formData.append('lastName', document.getElementById('lastName1').value);
+                formData.append('password', document.getElementById('password1').value);
+                formData.append('age', document.getElementById('age1').value);
+                const colorSelect = document.getElementById('roles1');
+
+                const selectedOptions = [];
+                // Перебираем все опции
+                for (let i = 0; i < colorSelect.options.length; i++) {
+                    // Если опция выбрана, добавляем её value в массив
+                    if (colorSelect.options[i].selected) {
+                        selectedOptions.push(colorSelect.options[i].value);
+                    }
+                }
+                formData.append('roles1', selectedOptions);
+                fetch(postURL, {
+                    method: 'POST',
+                    body: formData, // Отправляем данные в формате FormData
+                })
+                    .then(response => {
+                        if (response.ok) { // Проверяем, что ответ успешный (статус 200-299)
+                            // Редирект на страницу успеха
+                            window.location.href = '/admin';
+                            // или window.location.replace('/success-page');
+                        }
+                    }) // Парсим ответ как JSON
+
+                    .catch((error) => {
+                        console.error('Ошибка:', error);
+                        document.getElementById('response').textContent = 'Произошла ошибка при отправке.';
+                    });
+            }
+        });
+    }
+        document.getElementById("tab1-tab").addEventListener('click', event => {
+            document.getElementById('h').innerText = "All users"
+        })
+        document.getElementById("tab2-tab").addEventListener('click', event => {
+            document.getElementById('h').innerText = "Add new user"
+        })
+
+
+</script>
 </body>
 </html>
