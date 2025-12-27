@@ -27,6 +27,7 @@ public class AdminController {
     @GetMapping("/new")
     public String createUser(Model model) {
         model.addAttribute("newUser", new User());
+        model.addAttribute("allRoles", roleService.findAllRoles());
         return "admin/create";
     }
 
@@ -40,19 +41,22 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+
     @GetMapping("/{id}")
     public String showUser(@PathVariable int id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
         return "admin/info";
     }
 
-    @GetMapping("")
+    @GetMapping()
     public String showUsersList(Model model) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("user", userService.findUserByUsername(userName));
         model.addAttribute("newUser", new User());
         model.addAttribute("users", userService.getUsersList());
-        model.addAttribute("roles", roleService.findAllRoles());
+        model.addAttribute("userToEdit",new User());
+        model.addAttribute("userToDelete",new User());
+        model.addAttribute("allRoles", roleService.findAllRoles());
         return "admin/users";
     }
 
@@ -65,7 +69,7 @@ public class AdminController {
     @PostMapping("/edit/{id}")
     public String updateUser(@ModelAttribute("user") @Validated User user, BindingResult bindingResult,
                              @PathVariable int id,
-                             @RequestParam("roles1") List<Integer> roleIds) {
+                             @RequestParam("roles") List<Integer> roleIds) {
         if (bindingResult.hasErrors()) {
             return "admin/edit";
         }

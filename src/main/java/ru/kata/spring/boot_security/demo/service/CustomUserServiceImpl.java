@@ -23,13 +23,11 @@ import java.util.stream.Collectors;
 public class CustomUserServiceImpl implements CustomUserService {
 
     private final UserRepository userRepository;
-    private final RoleService roleService;
     private final RoleRepository roleRepository;
 
 
-    public CustomUserServiceImpl(UserRepository userRepository, RoleService roleService, RoleRepository roleRepository) {
+    public CustomUserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.roleService = roleService;
         this.roleRepository = roleRepository;
     }
 
