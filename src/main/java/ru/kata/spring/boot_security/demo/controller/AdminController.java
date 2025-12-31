@@ -76,6 +76,23 @@ public class AdminController {
         userService.updateUser(id, user);
         return "redirect:/admin";
     }
+    @GetMapping("/edits/{id}")
+    public String updateUser1(@PathVariable int id, Model model) {
+        model.addAttribute("user", userService.findUserById(id));
+        model.addAttribute("allRoles",roleService.findAllRoles());
+        return "public/Test";
+    }
+
+    @PostMapping("/edits/{id}")
+    public String updateUser1(@ModelAttribute("user") @Validated User user, BindingResult bindingResult,
+                             @PathVariable int id
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "admin/edit";
+        }
+        userService.updateUser(id, user);
+        return "redirect:/admin";
+    }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable int id) {
@@ -100,5 +117,16 @@ public class AdminController {
     //        userService.updateUser(id, user);
     //        return "redirect:/admin";
     //    }
+    @GetMapping("/users")
+    public String showUsersList1(Model model) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("user", userService.findUserByUsername(userName));
+        model.addAttribute("newUser", new User());
+        model.addAttribute("users", userService.getUsersList());
+        model.addAttribute("userToEdit",new User());
+//        model.addAttribute("userToDelete",new User());
+        model.addAttribute("allRoles", roleService.findAllRoles());
+        return "public/Test";
+    }
 
 }
