@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Admin page</title>
@@ -28,17 +30,13 @@
             </form>
         </div>
     </div>
-
-    <!--    123-->
-    <div class="container-fluid">
-
-        <div class="row ">
+        <div class="row">
             <div class="col-2 g-0 gy-2">
                 <ol class="list-group d-flex flex-column min-vh-100 ">
                     <li class="container-fluid">
-                        <a href="http://localhost:8080/admin" class="list-group-item active" style="margin-left: 10px; "
+                        <a href="http://localhost:8080/admin" sec:authorize="hasAuthority('ADMIN')" class="list-group-item active" style="margin-left: 10px; "
                            aria-current="true">Admin</a>
-                        <a href="http://localhost:8080/user" class="list-group-item" style="margin-left: 10px; ">
+                        <a href="http://localhost:8080/user" sec:authorize="hasAuthority('USER')" class="list-group-item " style="margin-left: 10px; ">
                             User</a>
                     </li>
                 </ol>
@@ -62,9 +60,7 @@
                             </button>
                         </li>
                     </ul>
-
                     <div class="container bg-white border border-2 rounded-top-1 rounded-bottom-1 ">
-
                         <div class="row bg-secondary bg-opacity-10 rounded-top-1 border-bottom ">
                             <div class="col-sm align-self-start p-2 my-1" style="width: 50%; margin-left: 10px;">
                                 <h5 id="h">All users</h5>
@@ -100,9 +96,7 @@
                                                 <button type="button" class="btn btn-info text-white"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal"
-
                                                         th:data-id="*{User.id}"> Edit
-                                                    <!--                                                    th:data-id="${User.id}"> Edit-->
                                                 </button>
                                             </td>
                                             <td>
@@ -125,42 +119,47 @@
                                     <div class="col-13" style="text-align: center;">
                                         <form th:method="POST" th:action="@{/admin/new}" th:object="${newUser}">
 
-                                            <label><b>First name</b></label>
-                                            <br/>
-                                            <input type="text" placeholder="firstName" th:field="*{firstName}"/>
-                                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
-                                                 th:errors="firstName"></div>
-                                            <br/>
+                                            <div class="mb-3">
+                                                <label><b>First name</b></label>
+                                                <br/>
+                                                <input type="text" placeholder="firstName" th:field="*{firstName}"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
+                                                     th:errors="firstName"></div>
+                                            </div>
 
-                                            <label><b>Last name</b></label>
-                                            <br/>
-                                            <input type="text" placeholder="lastName" th:field="*{lastName}"/>
-                                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
-                                                 th:errors="lastName"></div>
-                                            <br/>
+                                            <div class="mb-3">
+                                                <label><b>Last name</b></label>
+                                                <br/>
+                                                <input type="text" placeholder="lastName" th:field="*{lastName}"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
+                                                     th:errors="lastName"></div>
+                                            </div>
 
-                                            <label><b>Age</b></label>
-                                            <br/>
-                                            <input type="number" placeholder="age" th:field="*{age}"/>
-                                            <div style="color:red" th:if="${#fields.hasErrors('age')}"
-                                                 th:errors="age"></div>
-                                            <br/>
+                                            <div class="mb-3">
+                                                <label><b>Age</b></label>
+                                                <br/>
+                                                <input type="number" placeholder="age" th:field="*{age}"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('age')}"
+                                                     th:errors="age"></div>
+                                            </div>
 
-                                            <label><b>Email</b></label>
-                                            <br/>
-                                            <input type="email" placeholder="username" th:field="*{username}"/>
-                                            <div style="color:red" th:if="${#fields.hasErrors('username')}"
-                                                 th:errors="username"></div>
-                                            <br/>
+                                            <div class="mb-3">
+                                                <label><b>Email</b></label>
+                                                <br/>
+                                                <input type="email" placeholder="username" th:field="*{username}"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('username')}"
+                                                     th:errors="username"></div>
+                                            </div>
 
-                                            <label><b>Password</b></label>
-                                            <br/>
-                                            <input type="text" placeholder="password" th:field="*{password}"/>
-                                            <div style="color:red" th:if="${#fields.hasErrors('password')}"
-                                                 th:errors="password"></div>
-                                            <br/>
+                                            <div class="mb-3">
+                                                <label><b>Password</b></label>
+                                                <br/>
+                                                <input type="text" placeholder="password" th:field="*{password}"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('password')}"
+                                                     th:errors="password"></div>
+                                            </div>
 
-                                            <div>
+                                            <div class="mb-3">
                                                 <label for="roles"><b>Role</b></label>
                                                 <br/>
                                                 <select name="roles" id="roles" size="2" multiple>
@@ -181,64 +180,74 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
-                                                <button type="button" class="close" data-bs-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Закрыть"></button>
                                             </div>
                                             <div align="center">
-                                                <div class="col-6 modal-body" align="center">
-                                                    <form  th:object="${user}" id="myForm1">
-                                                        <label for="Id1"><b>Id</b></label>
-                                                        <br>
-                                                        <input type="text" placeholder="id" th:field="*{id}" id="Id1"
-                                                               disabled/>
-                                                        <div style="color:red" th:if="${#fields.hasErrors('id')}"
-                                                             th:errors="userid" disabled="true"></div>
-                                                        <br/>
+                                                <div class="col modal-body" align="center">
+                                                    <form th:object="${user}" id="myForm1">
+                                                        <div class="mb-3">
+                                                            <label for="Id1"><b>Id</b></label>
+                                                            <br>
+                                                            <input type="text" placeholder="id" th:field="*{id}"
+                                                                   id="Id1"
+                                                                   disabled/>
+                                                            <div style="color:red" th:if="${#fields.hasErrors('id')}"
+                                                                 th:errors="userid" disabled="true"></div>
+                                                        </div>
 
-                                                        <label for="firstName1"><b>First name</b></label>
-                                                        <br>
-                                                        <input type="text" placeholder="firstName"
-                                                               th:field="*{firstName}"
-                                                               id="firstName1"/>
-                                                        <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
-                                                             th:errors="firstName"></div>
-                                                        <br/>
+                                                        <div class="mb-3">
+                                                            <label for="firstName1"><b>First name</b></label>
+                                                            <br>
+                                                            <input type="text" placeholder="firstName"
+                                                                   th:field="*{firstName}"
+                                                                   id="firstName1"/>
+                                                            <div style="color:red"
+                                                                 th:if="${#fields.hasErrors('firstName')}"
+                                                                 th:errors="firstName"></div>
+                                                        </div>
 
-                                                        <label for="lastName1"><b>Last name</b></label>
-                                                        <br>
-                                                        <input type="text" placeholder="lastName" th:field="*{lastName}"
-                                                               id="lastName1"/>
-                                                        <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
-                                                             th:errors="lastName"></div>
-                                                        <br/>
+                                                        <div class="mb-3">
+                                                            <label for="lastName1"><b>Last name</b></label>
+                                                            <br>
+                                                            <input type="text" placeholder="lastName"
+                                                                   th:field="*{lastName}"
+                                                                   id="lastName1"/>
+                                                            <div style="color:red"
+                                                                 th:if="${#fields.hasErrors('lastName')}"
+                                                                 th:errors="lastName"></div>
+                                                        </div>
 
-                                                        <label for="age1"><b>Age</b></label>
-                                                        <br>
-                                                        <input type="number" placeholder="age" id="age1"/>
-                                                        <div style="color:red" th:if="${#fields.hasErrors('age')}"
-                                                             th:errors="age"></div>
-                                                        <br/>
+                                                        <div class="mb-3">
+                                                            <label for="age1"><b>Age</b></label>
+                                                            <br>
+                                                            <input type="number" placeholder="age" id="age1"/>
+                                                            <div style="color:red" th:if="${#fields.hasErrors('age')}"
+                                                                 th:errors="age"></div>
+                                                        </div>
 
-                                                        <label for="username1"><b>Email</b></label>
-                                                        <br>
-                                                        <input type="email" placeholder="username"
-                                                               th:field="*{username}"
-                                                               id="username1"/>
-                                                        <div style="color:red" th:if="${#fields.hasErrors('username')}"
-                                                             th:errors="username"></div>
-                                                        <br/>
+                                                        <div class="mb-3">
+                                                            <label for="username1"><b>Email</b></label>
+                                                            <br>
+                                                            <input type="email" placeholder="username"
+                                                                   th:field="*{username}"
+                                                                   id="username1"/>
+                                                            <div style="color:red"
+                                                                 th:if="${#fields.hasErrors('username')}"
+                                                                 th:errors="username"></div>
+                                                        </div>
 
-                                                        <label for="password1"><b>Password</b></label>
-                                                        <br/>
-                                                        <input type="password" placeholder="password"
-                                                               th:field="*{password}"
-                                                               id="password1"/>
-                                                        <div style="color:red" th:if="${#fields.hasErrors('password')}"
-                                                             th:errors="password"></div>
-                                                        <br/>
-                                                        <div>
+                                                        <div class="mb-3">
+                                                            <label for="password1"><b>Password</b></label>
+                                                            <br/>
+                                                            <input type="password" placeholder="password"
+                                                                   th:field="*{password}"
+                                                                   id="password1"/>
+                                                            <div style="color:red"
+                                                                 th:if="${#fields.hasErrors('password')}"
+                                                                 th:errors="password"></div>
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label for="roles1"><b>Role</b></label>
                                                             <br/>
                                                             <select id="roles1" name="roles1" multiple size="2">
@@ -248,13 +257,11 @@
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <!--                                    Выревнивание по правому краю-->
                                                             <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">
-                                                                Close
+                                                                    data-bs-dismiss="modal">Close
                                                             </button>
-                                                            <button type="submit" id="action" class="btn btn-primary">
-                                                                Click me
+                                                            <button type="submit" id="action"
+                                                                    class="btn btn-primary">Click
                                                             </button>
                                                         </div>
                                                     </form>
@@ -263,14 +270,13 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col"></div>
+<!--        <div class="col"></div>-->
     </div>
 </div>
 
@@ -305,7 +311,7 @@
                             if (!response.ok) {
                                 throw new Error('Сетевая ошибка: ' + response.status);
                             }
-                            return response.text(); // Преобразуем ответ в JSON, можно использовать .text()
+                            return response.text();
                         })
                         .then(data => {
                             const parser = new DOMParser();
@@ -324,7 +330,7 @@
 
                         })
                         .catch(error => {
-                            console.error('Ошибка при запросе:', error); // Обработка ошибок
+                            console.error('Ошибка при запросе:', error);
                         });
                 })
             })
@@ -348,7 +354,7 @@
                             if (!response.ok) {
                                 throw new Error('Сетевая ошибка: ' + response.status);
                             }
-                            return response.text(); // Преобразуем ответ в JSON, можно использовать .text()
+                            return response.text();
                         })
                         .then(data => {
                             const parser = new DOMParser();
@@ -370,9 +376,7 @@
                 })
             })
 
-            // Добавляем обработчик
             btn.addEventListener('submit', function () {
-                // event.preventDefault();
                 if (id && postURL) {
                     const formData = new FormData();
                     formData.append('id', id);
@@ -381,32 +385,25 @@
                     formData.append('lastName', document.getElementById('lastName1').value);
                     formData.append('password', document.getElementById('password1').value);
                     formData.append('age', document.getElementById('age1').value);
-                    const colorSelect = document.getElementById('roles1');
+                    const roleSelect = document.getElementById('roles1');
 
                     const selectedOptions = [];
-                    // Перебираем все опции
-                    for (let i = 0; i < colorSelect.options.length; i++) {
-                        // Если опция выбрана, добавляем её value в массив
-                        if (colorSelect.options[i].selected) {
-                            selectedOptions.push(colorSelect.options[i].value);
+                    for (let i = 0; i < roleSelect.options.length; i++) {
+                        if (roleSelect.options[i].selected) {
+                            selectedOptions.push(roleSelect.options[i].value);
                         }
                     }
                     formData.append('roles', selectedOptions);
                     fetch(postURL, {
                         method: 'POST',
-                        body: formData, // Отправляем данные в формате FormData
+                        body: formData,
                     })
                         .then(response => {
-                            if (response.ok) { // Проверяем, что ответ успешный (статус 200-299)
-                                // Редирект на страницу успеха
+                            if (response.ok) {
                                 location.reload()
-                             //   window.location.href = window.location.href;
-                             //    window.location.href = "http://localhost:8080/admin";
-                               // window.location.href = " redirect:/admin";
-                                // или window.location.replace('/success-page');
+                               // document.location.reload();
                             }
-                        }) // Парсим ответ как JSON
-
+                        })
                         .catch((error) => {
                             console.error('Ошибка:', error);
                             document.getElementById('response').textContent = 'Произошла ошибка при отправке.';

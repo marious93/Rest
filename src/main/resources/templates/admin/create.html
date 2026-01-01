@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Create user</title>
 </head>
 <body>
-        <form th:method="POST" th:action="@{/admin/new}" th:object="${newUser}">
+        <form th:method="POST" th:action="@{/admin/new}" th:object="${user}">
             <label>First name</label>
             <input type="text" placeholder="firstName" th:field="*{firstName}"/>
             <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="firstName"></div>
@@ -31,7 +31,7 @@
             <br/>
                 <label for="roles1"><b>Role</b></label>
                 <br/>
-                <select id="roles1" name="roles" multiple size="2">
+                <select id="roles1" name="roles" th:field="*{roles}" multiple size="2">
                     <option th:each="role : ${allRoles}" th:value="${role.id}"
                             th:text="${role.name}"></option>
                 </select>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -13,7 +13,7 @@
 <div class="container-fluid">
 
     <div class="row bg-dark bg-opacity-80 text-white">
-        <div class="col-2" align="center">
+        <div class="col-3" align="center">
 
             <div class="col" style="color: white">
                 <div class="mx-auto p-2 " align="left">
@@ -36,10 +36,10 @@
             <div class="col-2 g-0 gy-2">
                 <ol class="list-group d-flex flex-column min-vh-100 ">
                     <li class="container-fluid">
-<!--                        <div sec:authorize="hasRole('ADMIN')">-->
-                        <a href="http://localhost:8080/admin" class="list-group-item" style="margin-left: 10px; " aria-current="true">Admin</a>
-<!--                        </div>-->
-                            <a href="http://localhost:8080/user" class="list-group-item active" style="margin-left: 10px; "> User</a>
+                        <a href="http://localhost:8080/admin" sec:authorize="hasAuthority('ADMIN')" class="list-group-item" style="margin-left: 10px; "
+                           aria-current="true">Admin</a>
+                        <a href="http://localhost:8080/user" class="list-group-item active" style="margin-left: 10px; ">
+                            User</a>
                     </li>
                 </ol>
             </div>

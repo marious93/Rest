@@ -9,13 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.enity.Role;
 import ru.kata.spring.boot_security.demo.enity.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,12 +20,10 @@ import java.util.stream.Collectors;
 public class CustomUserServiceImpl implements CustomUserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
 
-    public CustomUserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public CustomUserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
