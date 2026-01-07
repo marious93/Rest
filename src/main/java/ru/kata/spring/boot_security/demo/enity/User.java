@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.enity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -45,6 +46,7 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany
+    @JsonManagedReference
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

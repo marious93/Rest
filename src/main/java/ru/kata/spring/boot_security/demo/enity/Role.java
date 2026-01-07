@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.enity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class Role {
     private String name;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))

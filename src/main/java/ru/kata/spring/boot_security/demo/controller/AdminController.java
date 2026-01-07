@@ -10,6 +10,8 @@ import ru.kata.spring.boot_security.demo.enity.User;
 import ru.kata.spring.boot_security.demo.service.CustomUserService;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -54,6 +56,7 @@ public class AdminController {
         model.addAttribute("allRoles", roleService.findAllRoles());
         return "admin/users";
     }
+
 
     @GetMapping("/edit/{id}")
     public String updateUser(@PathVariable int id, Model model) {
