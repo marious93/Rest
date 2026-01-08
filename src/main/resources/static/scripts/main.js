@@ -63,12 +63,11 @@ function updateTableData(data) {
       <td><button class="edit-button btn btn-info text-white" data-id="${user.id}">Edit</button></td>
       <td><button class="delete-button btn btn-danger text-white" data-id="${user.id}">Delete</button></td>
     `;
-
+        const btn = document.getElementById('myForm1');
         const editButton = row.querySelector('.edit-button');
         editButton.addEventListener('click', () => {
             const myModal = new bootstrap.Modal(document.getElementById('myModal'));
             myModal.show();
-            const btn = document.getElementById('myForm1');
             let id = editButton.getAttribute('data-id')
             document.getElementById('firstName1').disabled = false;
             document.getElementById('lastName1').disabled = false;
@@ -83,13 +82,12 @@ function updateTableData(data) {
                 e.preventDefault();
                 if (id) {
                     let formData = collectingUserData(id)
-                    fetch('/users', {
+                    fetch(URL, {
                         method: 'PUT',
                         body: formData
                     })
                         .then(response => {
                             if (response.ok) {
-                                // $('#myModal').hide();
                                 loadData();
                                 $('#myModal').modal('hide')
                                 hideTab2AndSwitchToTab1();
@@ -116,20 +114,18 @@ function updateTableData(data) {
             document.getElementById('action').innerText = "Delete";
             document.getElementById('exampleModalLabel').innerText = "Delete user"
             loadUser(id)
-
-
             btn.addEventListener('submit', async function (e) {
                 e.preventDefault();
+                let formData = collectingUserData(id)
                 if (id) {
-                    const formData = collectingUserData(id)
-                    fetch("/users", {
+                    fetch('/users/'+id, {
                         method: 'DELETE',
                         body: formData,
                     })
                         .then(response => {
                             if (response.ok) {
                                 loadData();
-                                $('#myModal').modal('hide');
+                                $('#myModal').modal('hide')
                                 hideTab2AndSwitchToTab1();
                             }
                         })
@@ -215,11 +211,12 @@ async function fillRolesSelector() {
 
 
 function hideTab2AndSwitchToTab1() {
-    $('#tab2').hide(); // Скрываем содержимое второй вкладки (div с id="tab2")
+    // $('#tab2').hide(); // Скрываем содержимое второй вкладки (div с id="tab2")
     // $('#tab2-tab').hide(); // Скрываем кнопку второй вкладки (li с id="tab2-tab")
     $('#tab1-tab').tab('show'); // Переключаемся на первую вкладку
 }
-function loadUser(id){
+
+function loadUser(id) {
     let getURL = 'http://localhost:8080/admin/edit/' + id;
     fetch(getURL)
         .then(response => {
@@ -247,7 +244,8 @@ function loadUser(id){
             console.error('Ошибка при запросе:', error); // Обработка ошибок
         });
 }
-function collectingUserData(id){
+
+function collectingUserData(id) {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('username', document.getElementById('username1').value);

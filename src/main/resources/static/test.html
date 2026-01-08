@@ -27,8 +27,8 @@
         <div class="col-8">
         </div>
         <div class="col">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn bg-dark text-white-50" style>Logout</button>
+            <form action="/logout" method="post">
+                <button type="submit" class="btn bg-dark text-white-50">Logout</button>
             </form>
         </div>
     </div>
@@ -36,7 +36,7 @@
         <div class="col-2 g-0 gy-2">
             <ol class="list-group d-flex flex-column min-vh-100 ">
                 <li class="container-fluid">
-                    <a href="http://localhost:8080/admin" sec:authorize="hasAuthority('ADMIN')"
+                    <a href="/test.html" sec:authorize="hasAuthority('ADMIN')"
                        class="list-group-item active" style="margin-left: 10px; "
                        aria-current="true">Admin</a>
                     <a href="http://localhost:8080/user" sec:authorize="hasAuthority('USER')" class="list-group-item "
