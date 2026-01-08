@@ -190,19 +190,24 @@ async function fillRolesSelector() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const roles = await response.json();
         const selectElement = document.getElementById('roles'); // Находим селектор по его ID
         selectElement.innerHTML = '';
         const selectElement1 = document.getElementById('roles1'); // Находим селектор по его ID
         selectElement1.innerHTML = '';
+        const roles = await response.json();
 
         roles.forEach(role => {
-            const option = document.createElement('option');
-            option.value = role.id;
-            option.text = role.name;
-            selectElement.appendChild(option);
-            selectElement1.appendChild(option);
+            const option1 = document.createElement('option');  // Создаем option для selectElement
+            option1.value = role.id;
+            option1.text = role.name;
+            selectElement.appendChild(option1);
+
+            const option2 = document.createElement('option');  // Создаем option для selectElement1
+            option2.value = role.id;
+            option2.text = role.name;
+            selectElement1.appendChild(option2);
         });
+
     } catch (error) {
         console.error('Ошибка при получении или обработке списка ролей:', error);
     }
