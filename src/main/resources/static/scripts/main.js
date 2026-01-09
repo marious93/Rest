@@ -65,16 +65,12 @@ function updateTableData(data) {
     `;
         const btn = document.getElementById('myForm1');
         const editButton = row.querySelector('.edit-button');
+        const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        let id;
         editButton.addEventListener('click', () => {
-            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
             myModal.show();
-            let id = editButton.getAttribute('data-id')
-            document.getElementById('firstName1').disabled = false;
-            document.getElementById('lastName1').disabled = false;
-            document.getElementById('age1').disabled = false;
-            document.getElementById('username1').disabled = false;
-            document.getElementById('password1').disabled = false;
-            document.getElementById('roles1').disabled = false;
+            id = editButton.getAttribute('data-id')
+            unlockData()
             document.getElementById('action').innerText = 'Edit';
             document.getElementById('exampleModalLabel').innerText = "Edit user"
             loadUser(id)
@@ -102,25 +98,17 @@ function updateTableData(data) {
         });
         const deleteButton = row.querySelector('.delete-button');
         deleteButton.addEventListener('click', () => {
-            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
             myModal.show();
-            let id = deleteButton.getAttribute('data-id')
-            document.getElementById('firstName1').disabled = true;
-            document.getElementById('lastName1').disabled = true;
-            document.getElementById('age1').disabled = true;
-            document.getElementById('username1').disabled = true;
-            document.getElementById('password1').disabled = true;
-            document.getElementById('roles1').disabled = true;
+            id = deleteButton.getAttribute('data-id')
+            lockData()
             document.getElementById('action').innerText = "Delete";
             document.getElementById('exampleModalLabel').innerText = "Delete user"
             loadUser(id)
             btn.addEventListener('submit', async function (e) {
                 e.preventDefault();
-                let formData = collectingUserData(id)
                 if (id) {
                     fetch('/users/'+id, {
-                        method: 'DELETE',
-                        body: formData,
+                        method: 'DELETE'
                     })
                         .then(response => {
                             if (response.ok) {
@@ -211,14 +199,14 @@ async function fillRolesSelector() {
 
 
 function hideTab2AndSwitchToTab1() {
-    // $('#tab2').hide(); // Скрываем содержимое второй вкладки (div с id="tab2")
-    // $('#tab2-tab').hide(); // Скрываем кнопку второй вкладки (li с id="tab2-tab")
     $('#tab1-tab').tab('show'); // Переключаемся на первую вкладку
 }
 
 function loadUser(id) {
-    let getURL = 'http://localhost:8080/admin/edit/' + id;
-    fetch(getURL)
+    let getURL = '/users/' + id;
+    fetch(getURL,{
+        method: 'GET'
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Сетевая ошибка: ' + response.status);
@@ -226,19 +214,13 @@ function loadUser(id) {
             return response.text();
         })
         .then(data => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data, 'text/html');
-            const inputElement2 = doc.getElementById('firstName');
-            const inputElement3 = doc.getElementById('lastName')
-            const inputElement4 = doc.getElementById('age');
-            const inputElement5 = doc.getElementById('username')
-            const inputElement6 = doc.getElementById('password');
+            const users = JSON.parse(data);
             document.getElementById('Id1').value = id;
-            document.getElementById('firstName1').value = inputElement2.value;
-            document.getElementById('lastName1').value = inputElement3.value;
-            document.getElementById('age1').value = inputElement4.value;
-            document.getElementById('username1').value = inputElement5.value;
-            document.getElementById('password1').value = inputElement6.value;
+            document.getElementById('firstName1').value = users.firstName;
+            document.getElementById('lastName1').value = users.lastName;
+            document.getElementById('age1').value = users.age;
+            document.getElementById('username1').value = users.username;
+            document.getElementById('password1').value = users.password;
         })
         .catch(error => {
             console.error('Ошибка при запросе:', error); // Обработка ошибок
@@ -264,6 +246,23 @@ function collectingUserData(id) {
     formData.append('roles', selectedOptions);
     return formData;
 }
-
-
+function unlockData(){
+    document.getElementById('firstName1').disabled = false;
+    document.getElementById('lastName1').disabled = false;
+    document.getElementById('age1').disabled = false;
+    document.getElementById('username1').disabled = false;
+    document.getElementById('password1').disabled = false;
+    document.getElementById('roles1').disabled = false;
+}
+function lockData(){
+    document.getElementById('firstName1').disabled = true;
+    document.getElementById('lastName1').disabled = true;
+    document.getElementById('age1').disabled = true;
+    document.getElementById('username1').disabled = true;
+    document.getElementById('password1').disabled = true;
+    document.getElementById('roles1').disabled = true;
+}
+document.querySelector('.btn-secondary').addEventListener('click', function (e) {
+    $('#myModal').modal('hide')
+})
 

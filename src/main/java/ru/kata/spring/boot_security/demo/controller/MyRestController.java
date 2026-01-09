@@ -28,13 +28,18 @@ public class MyRestController {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         return userService.findUserByUsername(userName);
     }
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable int id) {
+        return userService.findUserById(id);
+    }
 
     @GetMapping("/users")
-    public List<User> hello() {
+    public List<User> getUserList() {
         return userService.getUsersList();
     }
+
     @GetMapping("/roles")
-    public List<Role> hello1() {
+    public List<Role> getRoleList() {
         return roleService.findAllRoles();
     }
 
