@@ -42,7 +42,7 @@ public class User implements UserDetails {
 
     @NotNull(message = "Пароль не может быть null")
     @NotEmpty(message = "Пароль не может быть пустым")
-    @Size(min = 2, max = 20, message = "Пароль должен быть от 2 до 20 символов")
+    @Size(min = 2, max = 60, message = "Пароль должен быть от 2 до 20 символов")
     private String password;
 
     @ManyToMany

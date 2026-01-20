@@ -1,10 +1,25 @@
 let URL = "http://localhost:8080/users"
 
-async function loadPage() {
+
+async function loadAdminPage() {
     await loadData()
     await fillRolesSelector()
-    let a = fetchCurrentUser()
-    document.getElementById("authorizedUser").innerText = await a;
+    document.getElementById("authorizedUser").innerText = await fetchCurrentUser();
+    const label = document.getElementById('header')
+    const tabContainer = document.querySelector('.nav.nav-tabs');
+    tabContainer.style.display = 'flex'
+    label.innerText = "Admin page"
+    document.getElementById('h').innerText = "All users"
+
+}
+
+async function loadUserPage() {
+    document.getElementById("authorizedUser").innerText = await fetchCurrentUser()
+    const label = document.getElementById('header')
+    const tabContainer = document.querySelector('.nav.nav-tabs');
+    tabContainer.style.display = 'none'
+    label.innerText = "User information-page"
+    document.getElementById('h').innerText = "About user"
 }
 
 async function loadData() {
@@ -107,7 +122,7 @@ function updateTableData(data) {
             btn.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 if (id) {
-                    fetch('/users/'+id, {
+                    fetch('/users/' + id, {
                         method: 'DELETE'
                     })
                         .then(response => {
@@ -155,7 +170,6 @@ function submitForm(event) {
                 await loadData()
                 hideTab2AndSwitchToTab1()
                 form.reset();
-
             } else {
                 console.error('Error adding user:', response.status);
                 response.text().then(errorMessage => {
@@ -204,7 +218,7 @@ function hideTab2AndSwitchToTab1() {
 
 function loadUser(id) {
     let getURL = '/users/' + id;
-    fetch(getURL,{
+    fetch(getURL, {
         method: 'GET'
     })
         .then(response => {
@@ -246,7 +260,8 @@ function collectingUserData(id) {
     formData.append('roles', selectedOptions);
     return formData;
 }
-function unlockData(){
+
+function unlockData() {
     document.getElementById('firstName1').disabled = false;
     document.getElementById('lastName1').disabled = false;
     document.getElementById('age1').disabled = false;
@@ -254,7 +269,8 @@ function unlockData(){
     document.getElementById('password1').disabled = false;
     document.getElementById('roles1').disabled = false;
 }
-function lockData(){
+
+function lockData() {
     document.getElementById('firstName1').disabled = true;
     document.getElementById('lastName1').disabled = true;
     document.getElementById('age1').disabled = true;
@@ -262,7 +278,11 @@ function lockData(){
     document.getElementById('password1').disabled = true;
     document.getElementById('roles1').disabled = true;
 }
-document.querySelector('.btn-secondary').addEventListener('click', function (e) {
-    $('#myModal').modal('hide')
-})
 
+
+const closeButton = document.querySelectorAll('.btn-secondary')
+closeButton.forEach(closeButton => {
+    closeButton.addEventListener('click', function (e) {
+        $('#myModal').modal('hide')
+    })
+})

@@ -36,10 +36,10 @@
         <div class="col-2 g-0 gy-2">
             <ol class="list-group d-flex flex-column min-vh-100 ">
                 <li class="container-fluid">
-                    <a href="/test.html" sec:authorize="hasAuthority('ADMIN')"
+                    <a  id="adminPage" sec:authorize="hasAuthority('ADMIN')"
                        class="list-group-item active" style="margin-left: 10px; "
                        aria-current="true">Admin</a>
-                    <a href="http://localhost:8080/user" sec:authorize="hasAuthority('USER')" class="list-group-item "
+                    <a id="userPage" sec:authorize="hasAuthority('USER')" class="list-group-item "
                        style="margin-left: 10px; ">
                         User</a>
                 </li>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="col-10 bg-body-secondary bg-opacity-50 flex-grow-1 px-4">
-            <div class="p-1 my-1"><h1>Admin page</h1></div>
+            <div class="p-1 my-1"><h1 id="header">Admin page</h1></div>
             <div class="container mt-4 justify-content-start ">
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -90,7 +90,8 @@
                                         <th scope="col">Delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="tbody"  class="border border-top border-end-0 border-start-0 border-bottom-0">
+                                    <tbody id="tbody"
+                                           class="border border-top border-end-0 border-start-0 border-bottom-0">
                                     <tr th:each="User : ${users}">
                                         <td th:text="*{User.id}"></td>
                                         <td th:text="*{User.firstName}"></td>
@@ -118,53 +119,53 @@
                                 </table>
                             </div>
 
-                                <div class="tab-pane fade centered-block" id="tab2"
-                                     role="tabpanel"
-                                     aria-labelledby="tab2-tab">
-                                    <div class="col-13" style="text-align: center;">
-                                        <form id="createForm"   onsubmit="submitForm(event)">
-                                            <div class="mb-3">
-                                                <label><b>First name</b></label>
-                                                <br/>
-                                                <input type="text" id="firstName" placeholder="firstName"/>
-                                            </div>
+                            <div class="tab-pane fade centered-block" id="tab2"
+                                 role="tabpanel"
+                                 aria-labelledby="tab2-tab">
+                                <div class="col-13" style="text-align: center;">
+                                    <form id="createForm" onsubmit="submitForm(event)">
+                                        <div class="mb-3">
+                                            <label><b>First name</b></label>
+                                            <br/>
+                                            <input type="text" id="firstName" placeholder="firstName"/>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label><b>Last name</b></label>
-                                                <br/>
-                                                <input type="text" id="lastName" placeholder="lastName"/>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label><b>Last name</b></label>
+                                            <br/>
+                                            <input type="text" id="lastName" placeholder="lastName"/>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label><b>Age</b></label>
-                                                <br/>
-                                                <input type="number" id="age" placeholder="age" />
-                                            </div>
+                                        <div class="mb-3">
+                                            <label><b>Age</b></label>
+                                            <br/>
+                                            <input type="number" id="age" placeholder="age"/>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label><b>Email</b></label>
-                                                <br/>
-                                                <input type="email" id="username" placeholder="username"/>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label><b>Email</b></label>
+                                            <br/>
+                                            <input type="email" id="username" placeholder="username"/>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label><b>Password</b></label>
-                                                <br/>
-                                                <input type="password" id="password" placeholder="password"/>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label><b>Password</b></label>
+                                            <br/>
+                                            <input type="password" id="password" placeholder="password"/>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label for="roles"><b>Role</b></label>
-                                                <br/>
-                                                <select id="roles" name="roles" multiple size="2">
-                                                </select>
-                                            </div>
-                                            <input type="submit" class="btn btn-primary btn-success"
-                                                   value="Add new user"/>
-                                        </form>
+                                        <div class="mb-3">
+                                            <label for="roles"><b>Role</b></label>
+                                            <br/>
+                                            <select id="roles" name="roles" multiple size="2">
+                                            </select>
+                                        </div>
+                                        <input type="submit" class="btn btn-primary btn-success"
+                                               value="Add new user"/>
+                                    </form>
 
-                                    </div>
                                 </div>
+                            </div>
 
                             <div class="modal fade" id="myModal" tabindex="-1"
                                  aria-labelledby="exampleModalLabel"
@@ -182,7 +183,7 @@
                                                     <div class="mb-3">
                                                         <label for="Id1"><b>Id</b></label>
                                                         <br>
-                                                        <input type="text" placeholder="id" th:field="*{id}"
+                                                        <input type="text" placeholder="id"
                                                                id="Id1"
                                                                disabled/>
                                                         <div style="color:red" th:if="${#fields.hasErrors('id')}"
@@ -193,7 +194,7 @@
                                                         <label for="firstName1"><b>First name</b></label>
                                                         <br>
                                                         <input type="text" placeholder="firstName"
-                                                               th:field="*{firstName}"
+
                                                                id="firstName1"/>
                                                         <div style="color:red"
                                                              th:if="${#fields.hasErrors('firstName')}"
@@ -204,7 +205,7 @@
                                                         <label for="lastName1"><b>Last name</b></label>
                                                         <br>
                                                         <input type="text" placeholder="lastName"
-                                                               th:field="*{lastName}"
+
                                                                id="lastName1"/>
                                                         <div style="color:red"
                                                              th:if="${#fields.hasErrors('lastName')}"
@@ -223,7 +224,7 @@
                                                         <label for="username1"><b>Email</b></label>
                                                         <br>
                                                         <input type="email" placeholder="username"
-                                                               th:field="*{username}"
+
                                                                id="username1"/>
                                                         <div style="color:red"
                                                              th:if="${#fields.hasErrors('username')}"
@@ -234,7 +235,6 @@
                                                         <label for="password1"><b>Password</b></label>
                                                         <br/>
                                                         <input type="password" placeholder="password"
-                                                               th:field="*{password}"
                                                                id="password1"/>
                                                         <div style="color:red"
                                                              th:if="${#fields.hasErrors('password')}"
@@ -260,20 +260,29 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-     loadPage()
+        loadAdminPage();
+
+        const adminP = document.getElementById('adminPage')
+        adminP.addEventListener('click', (event) =>{
+            loadAdminPage()
+        })
+        const userP = document.getElementById('userPage')
+        userP.addEventListener('click', (event) =>{
+            loadUserPage()
+        })
+
+
     });
 
 </script>

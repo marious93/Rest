@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.enity.Role;
@@ -20,10 +21,11 @@ import java.util.stream.Collectors;
 public class CustomUserServiceImpl implements CustomUserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-
-    public CustomUserServiceImpl(UserRepository userRepository) {
+    public CustomUserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -44,6 +46,7 @@ public class CustomUserServiceImpl implements CustomUserService {
 
     @Override
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -52,7 +55,7 @@ public class CustomUserServiceImpl implements CustomUserService {
         User oldUser = userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User not found"));
         oldUser.setUsername(user.getUsername());
-        oldUser.setPassword(user.getPassword());
+        oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
         oldUser.setLastName(user.getLastName());
         oldUser.setFirstName(user.getFirstName());
         oldUser.setAge(user.getAge());

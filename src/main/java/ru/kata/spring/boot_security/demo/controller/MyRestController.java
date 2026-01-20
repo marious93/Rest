@@ -17,7 +17,6 @@ import java.util.List;
 public class MyRestController {
     private final CustomUserService userService;
     private final RoleService roleService;
-//    private final String URL = "http://localhost:8080/";
 
     public MyRestController(CustomUserService userService, RoleService roleService) {
         this.userService = userService;
