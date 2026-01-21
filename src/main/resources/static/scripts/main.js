@@ -1,6 +1,5 @@
 let URL = "http://localhost:8080/users"
 
-
 async function loadAdminPage() {
     await loadData()
     await fillRolesSelector()
@@ -10,11 +9,11 @@ async function loadAdminPage() {
     tabContainer.style.display = 'flex'
     label.innerText = "Admin page"
     document.getElementById('h').innerText = "All users"
-
 }
 
 async function loadUserPage() {
     document.getElementById("authorizedUser").innerText = await fetchCurrentUser()
+    await loadUserData()
     const label = document.getElementById('header')
     const tabContainer = document.querySelector('.nav.nav-tabs');
     tabContainer.style.display = 'none'
@@ -31,7 +30,22 @@ async function loadData() {
             return response.json();
         })
         .then(async data => {
-            await updateTableData(data);
+            await updateTableData1(data);
+        })
+        .catch(error => {
+            console.error('Произошла ошибка при запросе:', error);
+        });
+}
+async function loadUserData() {
+    fetch("/users/current")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(async data => {
+            await updateTableData2(data);
         })
         .catch(error => {
             console.error('Произошла ошибка при запросе:', error);
@@ -52,13 +66,17 @@ async function fetchCurrentUser() {
     }
 }
 
-function updateTableData(data) {
-    let table = document.getElementById('myTable')
+function updateTableData1(data) {
+    let table = document.getElementById('adminTable')
+    let table2 = document.getElementById('userTable')
+    table.style.display = 'block';
+    table2.style.display = 'none';
     if (!table) {
         console.error("Таблица с id 'userTable' не найдена.");
         return;
     }
-    const tableBody = document.getElementById('tbody')
+    const tableBody = document.getElementById('admintbody')
+
     if (!tableBody) {
         console.error("Элемент <tbody> не найден внутри таблицы.");
         return;
@@ -140,6 +158,37 @@ function updateTableData(data) {
 
         })
     });
+}
+
+
+function updateTableData2(data) {
+    let table = document.getElementById('userTable')
+    let table2 = document.getElementById('adminTable')
+    table.style.display = 'block';
+    table2.style.display = 'none';
+    if (!table) {
+        console.error("Таблица с id 'userTable' не найдена.");
+        return;
+    }
+    const tableBody = document.getElementById('usertbody')
+    if (!tableBody) {
+        console.error("Элемент <tbody> не найден внутри таблицы.");
+        return;
+    }
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+    }
+
+    const row = tableBody.insertRow();
+    row.innerHTML = `
+        <td>${data.id}</td>
+        <td>${data.firstName}</td>
+        <td>${data.lastName}</td>
+        <td>${data.age}</td>
+        <td>${data.username}</td>
+        <td>${data.rolesToString}</td>
+    `;
+
 }
 
 function submitForm(event) {
