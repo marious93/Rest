@@ -66,6 +66,7 @@ async function fetchCurrentUser() {
     }
 }
 
+
 function updateTableData1(data) {
     let table = document.getElementById('adminTable')
     let table2 = document.getElementById('userTable')
