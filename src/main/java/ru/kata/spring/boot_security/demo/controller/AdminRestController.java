@@ -12,20 +12,15 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 
 import java.util.List;
 
-
+@RequestMapping("/admin")
 @RestController
-public class MyRestController {
+public class AdminRestController {
     private final CustomUserService userService;
     private final RoleService roleService;
 
-    public MyRestController(CustomUserService userService, RoleService roleService) {
+    public AdminRestController(CustomUserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-    }
-    @GetMapping("/users/current")
-    public User getCurrentUser() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userService.findUserByUsername(userName);
     }
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable int id) {

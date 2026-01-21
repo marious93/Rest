@@ -1,4 +1,6 @@
-let URL = "http://localhost:8080/users"
+let URL = "http://localhost:8080/admin/roles"
+const ADMIN_URL = "http://localhost:8080/admin/users";
+const USER_URL ="http://localhost:8080/user/current"
 
 async function loadAdminPage() {
     await loadData()
@@ -22,7 +24,7 @@ async function loadUserPage() {
 }
 
 async function loadData() {
-    fetch(URL)
+    fetch(ADMIN_URL)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -37,7 +39,7 @@ async function loadData() {
         });
 }
 async function loadUserData() {
-    fetch("/users/current")
+    fetch(USER_URL)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -54,7 +56,7 @@ async function loadUserData() {
 
 async function fetchCurrentUser() {
     try {
-        const response = await fetch('users/current');
+        const response = await fetch(USER_URL);
         if (response.ok) {
             const user = await response.json();
             return user.username + " with roles: " + user.rolesToString;
@@ -141,7 +143,7 @@ function updateTableData1(data) {
             btn.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 if (id) {
-                    fetch('/users/' + id, {
+                    fetch(ADMIN_URL+"/" + id, {
                         method: 'DELETE'
                     })
                         .then(response => {
@@ -211,7 +213,7 @@ function submitForm(event) {
     }
     formData.append('roles', selectedOptions);
 
-    fetch("/users", {
+    fetch(ADMIN_URL, {
         method: 'POST',
         body: formData,
     })
@@ -234,7 +236,7 @@ function submitForm(event) {
 
 async function fillRolesSelector() {
     try {
-        const response = await fetch('/roles');
+        const response = await fetch(URL);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -267,7 +269,7 @@ function hideTab2AndSwitchToTab1() {
 }
 
 function loadUser(id) {
-    let getURL = '/users/' + id;
+    let getURL = ADMIN_URL+"/" + id;
     fetch(getURL, {
         method: 'GET'
     })
