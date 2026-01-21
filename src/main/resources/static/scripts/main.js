@@ -212,8 +212,8 @@ function submitForm(event) {
     formData.append('roles', selectedOptions);
 
     fetch("/users", {
-        method: 'POST',  // Указываем метод POST
-        body: formData, // Передаем данные формы
+        method: 'POST',
+        body: formData,
     })
         .then(async response => {
             if (response.ok) {
@@ -234,23 +234,23 @@ function submitForm(event) {
 
 async function fillRolesSelector() {
     try {
-        const response = await fetch('/roles'); // Выполняем GET-запрос к /roles
+        const response = await fetch('/roles');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const selectElement = document.getElementById('roles'); // Находим селектор по его ID
+        const selectElement = document.getElementById('roles');
         selectElement.innerHTML = '';
-        const selectElement1 = document.getElementById('roles1'); // Находим селектор по его ID
+        const selectElement1 = document.getElementById('roles1');
         selectElement1.innerHTML = '';
         const roles = await response.json();
 
         roles.forEach(role => {
-            const option1 = document.createElement('option');  // Создаем option для selectElement
+            const option1 = document.createElement('option');
             option1.value = role.id;
             option1.text = role.name;
             selectElement.appendChild(option1);
 
-            const option2 = document.createElement('option');  // Создаем option для selectElement1
+            const option2 = document.createElement('option');
             option2.value = role.id;
             option2.text = role.name;
             selectElement1.appendChild(option2);
@@ -263,7 +263,7 @@ async function fillRolesSelector() {
 
 
 function hideTab2AndSwitchToTab1() {
-    $('#tab1-tab').tab('show'); // Переключаемся на первую вкладку
+    $('#tab1-tab').tab('show');
 }
 
 function loadUser(id) {
@@ -287,7 +287,7 @@ function loadUser(id) {
             document.getElementById('password1').value = users.password;
         })
         .catch(error => {
-            console.error('Ошибка при запросе:', error); // Обработка ошибок
+            console.error('Ошибка при запросе:', error);
         });
 }
 
