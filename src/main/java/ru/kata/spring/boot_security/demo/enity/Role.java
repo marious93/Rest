@@ -17,7 +17,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Getter
     private String name;
 
     @ManyToMany
