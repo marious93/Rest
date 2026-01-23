@@ -39,13 +39,13 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public User createUser(@RequestBody @Validated User user, BindingResult bindingResult) {
+    public User createUser(@RequestBody @Validated User user) {
         userService.saveUser(user);
         return user;
     }
 
     @PutMapping("/users")
-    public User updateUser(@ModelAttribute("user") @Validated User user, BindingResult bindingResult) {
+    public User updateUser(@ModelAttribute("user") @Validated User user) {
         userService.saveUser(user);
         return user;
     }
