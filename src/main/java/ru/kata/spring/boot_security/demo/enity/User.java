@@ -25,14 +25,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull(message = "firstName не может быть null")
-    @NotEmpty(message = "firstName не может быть пустым")
-    @Size(min = 2, max = 30, message = "firstName должен быть от 2 до 30 символов")
+//    @NotNull(message = "firstName не может быть null")
+//    @NotEmpty(message = "firstName не может быть пустым")
+//    @Size(min = 2, max = 30, message = "firstName должен быть от 2 до 30 символов")
     private String firstName;
 
-    @NotNull(message = "lastName не может быть null")
-    @NotEmpty(message = "lastName не может быть пустым")
-    @Size(min = 2, max = 30, message = "lastName должен быть от 2 до 30 символов")
+//    @NotNull(message = "lastName не может быть null")
+//    @NotEmpty(message = "lastName не может быть пустым")
+//    @Size(min = 2, max = 30, message = "lastName должен быть от 2 до 30 символов")
     private String lastName;
 
     private int age;
@@ -40,9 +40,9 @@ public class User implements UserDetails {
     private String username;
 
 
-    @NotNull(message = "Пароль не может быть null")
-    @NotEmpty(message = "Пароль не может быть пустым")
-    @Size(min = 2, max = 60, message = "Пароль должен быть от 2 до 20 символов")
+//    @NotNull(message = "Пароль не может быть null")
+//    @NotEmpty(message = "Пароль не может быть пустым")
+//    @Size(min = 2, max = 60, message = "Пароль должен быть от 2 до 20 символов")
     private String password;
 
     @ManyToMany

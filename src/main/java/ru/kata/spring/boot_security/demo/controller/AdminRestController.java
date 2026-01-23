@@ -12,8 +12,8 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 
 import java.util.List;
 
-@RequestMapping("/admin")
 @RestController
+@RequestMapping("/admin")
 public class AdminRestController {
     private final CustomUserService userService;
     private final RoleService roleService;
@@ -22,6 +22,7 @@ public class AdminRestController {
         this.userService = userService;
         this.roleService = roleService;
     }
+
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable int id) {
         return userService.findUserById(id);
@@ -38,8 +39,7 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public User createUser(@ModelAttribute("user") @Validated
-                           User user, BindingResult bindingResult) {
+    public User createUser(@RequestBody @Validated User user, BindingResult bindingResult) {
         userService.saveUser(user);
         return user;
     }
