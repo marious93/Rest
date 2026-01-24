@@ -1,8 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.enity.Role;
